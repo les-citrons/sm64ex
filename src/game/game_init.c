@@ -24,6 +24,8 @@
 #include "bettercamera.h"
 #endif
 
+#include "lua/lua.h"
+
 // FIXME: I'm not sure all of these variables belong in this file, but I don't
 // know of a good way to split them
 struct Controller gControllers[3];
@@ -608,6 +610,8 @@ void thread5_game_loop(UNUSED void *arg) {
     init_controllers();
     create_thread_6();
     save_file_load_all();
+
+	init_lua();
 
     set_vblank_handler(2, &gGameVblankHandler, &gGameVblankQueue, (OSMesg) 1);
 
