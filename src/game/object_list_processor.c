@@ -20,6 +20,8 @@
 #include "object_list_processor.h"
 #include "mario.h"
 
+#include "lua/lua.h"
+
 
 /**
  * Flags controlling what debug info is displayed.
@@ -625,6 +627,8 @@ static u16 unused_get_elapsed_time(u64 *cycleCounts, s32 index) {
  * and object surface management.
  */
 void update_objects(UNUSED s32 unused) {
+	lua_do_event("on_update");
+
     s64 cycleCounts[30];
 
     cycleCounts[0] = get_current_clock();
@@ -684,4 +688,6 @@ void update_objects(UNUSED s32 unused) {
     }
 
     gPrevFrameObjectCount = gObjectCounter;
+
+	lua_do_event("after_update");
 }

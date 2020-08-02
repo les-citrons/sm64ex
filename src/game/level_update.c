@@ -32,6 +32,7 @@
 #include "../pc/pc_main.h"
 
 #include "pc/cliopts.h"
+#include "lua/lua.h"
 
 #define PLAY_MODE_NORMAL 0
 #define PLAY_MODE_PAUSED 2
@@ -1229,6 +1230,8 @@ s32 init_level(void) {
     if (gMarioState->action == ACT_INTRO_CUTSCENE) {
         sound_banks_disable(2, 0x0330);
     }
+
+	lua_do_event("on_level_enter");
 
     return 1;
 }

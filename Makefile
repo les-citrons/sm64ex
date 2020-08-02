@@ -296,7 +296,7 @@ LEVEL_DIRS := $(patsubst levels/%,%,$(dir $(wildcard levels/*/header.h)))
 # Directories containing source files
 
 # Hi, I'm a PC
-SRC_DIRS := src src/engine src/game src/audio src/menu src/buffers actors levels bin data assets src/pc src/pc/gfx src/pc/audio src/pc/controller src/pc/fs src/pc/fs/packtypes
+SRC_DIRS := src src/engine src/game src/audio src/menu src/buffers src/lua actors levels bin data assets src/pc src/pc/gfx src/pc/audio src/pc/controller src/pc/fs src/pc/fs/packtypes
 ASM_DIRS :=
 
 ifeq ($(DISCORDRPC),1)
@@ -671,6 +671,7 @@ endif
 
 ASFLAGS := -I include -I $(BUILD_DIR) $(VERSION_ASFLAGS)
 
+
 ifeq ($(TARGET_WEB),1)
 LDFLAGS := -lm -lGL -lSDL2 -no-pie -s TOTAL_MEMORY=20MB -g4 --source-map-base http://localhost:8080/ -s "EXTRA_EXPORTED_RUNTIME_METHODS=['callMain']"
 
@@ -696,6 +697,10 @@ else
   endif
 
 endif # End of LDFLAGS
+
+LUA_LDFLAGS = -llua5.1 -ldl -lm
+
+LDFLAGS += $(LUA_LDFLAGS)
 
 # Prevent a crash with -sopt
 export LANG := C
