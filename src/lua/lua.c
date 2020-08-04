@@ -26,6 +26,7 @@ void push_script(lua_State *lvm, const char *name) {
 	if (lua_scripts == NULL) {
 		lua_scripts = malloc(sizeof(struct lua_script_node));
 		new = lua_scripts;
+		new->prev = NULL;
 	} else {
 		struct lua_script_node *s;
 		for (s = lua_scripts; s->next != NULL; s = s->next);
@@ -35,7 +36,7 @@ void push_script(lua_State *lvm, const char *name) {
 	}
 	new->lvm = lvm;
 	new->next = NULL;
-	new->name = malloc(strlen(name) + 1);
+	new->name = malloc(strlen(name) + 2);
 	strcpy(new->name, name);
 }
 
@@ -64,6 +65,7 @@ void init_lua() {
 		lua_State *lvm = lua_open();
 		luaL_openlibs(lvm);
 		lua_register_mario(lvm);
+		lua_register_controller(lvm);
 
 		char script_path[strlen(d->d_name) + strlen(SCRIPTDIR) + 2];
 		strcpy(script_path, SCRIPTDIR);
@@ -93,7 +95,7 @@ void lua_do_event(const char *handler_name) {
 		lua_getglobal(s->lvm, handler_name);
 		if (!lua_isnil(s->lvm, -1)) {
 			if (lua_pcall(s->lvm, 0, 0, 0)) {
-				fprintf(stderr, "%s\n", lua_tostring(s->lvm, -1));
+				fprintf(stderr, "%s: %s\n", s->name, lua_tostring(s->lvm, -1));
 				rem_script(s);
 			}
 		} else lua_pop(s->lvm, 1);

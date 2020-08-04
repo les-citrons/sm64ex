@@ -1,6 +1,7 @@
 #ifndef _MEMORY_H_
 #define _MEMORY_H_
 
+#include "PR/ultratypes.h"
 
 #define MEMORY_POOL_LEFT  0
 #define MEMORY_POOL_RIGHT 1

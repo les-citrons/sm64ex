@@ -2,6 +2,7 @@
 #define _GAME_INIT_H_
 
 #include "memory.h"
+#include "types.h"
 
 struct DemoInput
 {
